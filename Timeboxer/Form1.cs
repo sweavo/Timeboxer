@@ -90,7 +90,7 @@ namespace Timeboxer
                     gr.DrawLine(thin_tick_pen, inner_pt, outer_pt);
                 }
             }
-            TextRenderer.DrawText(gr, ts.TotalSeconds.ToString(), this.Font, ClientRectangle, Color.Black, Color.Yellow, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+            TextRenderer.DrawText(gr, ((int)ts.TotalSeconds).ToString(), this.Font, ClientRectangle, Color.Black, Color.WhiteSmoke, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter );
 
         }
 
@@ -127,5 +127,11 @@ namespace Timeboxer
 
             Refresh();
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            Refresh();
+        }
+
     }
 }
