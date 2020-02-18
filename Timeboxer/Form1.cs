@@ -14,14 +14,12 @@ namespace Timeboxer
 {
     public partial class TimeboxerForm : Form
     {
+        private DateTime alarm = DateTime.Now;
+        private PointF last_mouse = new Point(0, 0);
+
         public TimeboxerForm()
         {
             InitializeComponent();
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-            Refresh();
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -89,7 +87,15 @@ namespace Timeboxer
                 }
             }
 
+            // Draw the mouse position
+            gr.FillRectangle(Brushes.Green, last_mouse.X-ClientRectangle.Width/2, last_mouse.Y-ClientRectangle.Height/2, 5,5);
             
+        }
+
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            last_mouse = e.Location;
+            Refresh();
         }
     }
 }
