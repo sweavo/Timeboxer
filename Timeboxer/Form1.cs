@@ -93,8 +93,8 @@ namespace Timeboxer
             // Draw the mouse position
             gr.FillRectangle(Brushes.Green, last_mouse.X, last_mouse.Y, 5,5);
             // Draw _through_ the mouse position
-            double mouse_angle = Math.Atan(last_mouse.Y / last_mouse.X);
-            //gr.DrawArc()
+            double mouse_angle = Math.Atan(last_mouse.Y / last_mouse.X) * 180 / Math.PI + (last_mouse.X < 0 ? 270 : 90 );
+            gr.FillPie(Brushes.AliceBlue, pad_rectangle, -90.0f, (float)mouse_angle);
             
         }
 
