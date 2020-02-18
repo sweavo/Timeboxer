@@ -31,6 +31,8 @@ namespace Timeboxer
             Pen thin_tick_pen = Pens.Black;
 
             Graphics gr = e.Graphics;
+            gr.Clear(this.TransparencyKey); 
+
             gr.SmoothingMode = SmoothingMode.AntiAlias;
             gr.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
@@ -49,6 +51,7 @@ namespace Timeboxer
                 -ClientSize.Width / 2 + 4, -ClientSize.Height / 2 + 4,
                 ClientSize.Width - 8, ClientSize.Height - 8);
 
+            gr.FillEllipse(Brushes.White, pad_rectangle);
             // Draw the second hand.
             gr.FillPie(Brushes.Coral,
                 pad_rectangle,
