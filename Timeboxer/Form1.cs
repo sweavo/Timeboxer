@@ -43,16 +43,19 @@ namespace Timeboxer
             // Get the hour and minute plus any fraction that has elapsed.
             DateTime now = DateTime.Now;
 
+            // We're going to draw arcs and pies in a common rectangle, which i the client rectangle minus some padding:
+            Rectangle pad_rectangle = new Rectangle(
+                -ClientSize.Width / 2 + 4, -ClientSize.Height / 2 + 4,
+                ClientSize.Width - 8, ClientSize.Height - 8);
+
             // Draw the second hand.
             gr.FillPie(Brushes.Coral,
-                -ClientSize.Width / 2f + 4f, -ClientSize.Height / 2f + 4f,
-                ClientSize.Width - 8f, ClientSize.Height - 8f,
+                pad_rectangle,
                 -90.0f, 6*(now.Second % 60));
 
             // Outline
             gr.DrawEllipse(border_pen,
-                -ClientSize.Width / 2f + 4f, -ClientSize.Height / 2f + 4f,
-                ClientSize.Width - 8f, ClientSize.Height - 8f);
+                pad_rectangle);
 
             // Get scale factors.
             float outer_x_factor = 0.45f * ClientSize.Width;
@@ -89,7 +92,9 @@ namespace Timeboxer
 
             // Draw the mouse position
             gr.FillRectangle(Brushes.Green, last_mouse.X, last_mouse.Y, 5,5);
-            
+            // Draw _through_ the mouse position
+            double mouse_angle = Math.Atan(last_mouse.Y / last_mouse.X);
+            //gr.DrawArc()
             
         }
 
