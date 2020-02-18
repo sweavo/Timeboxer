@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Timeboxer
 {
-    public partial class Form1 : Form
+    public partial class TimeboxerForm : Form
     {
-        public Form1()
+        public TimeboxerForm()
         {
             InitializeComponent();
         }
