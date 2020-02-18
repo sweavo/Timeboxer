@@ -46,20 +46,10 @@ namespace Timeboxer
             DateTime now = DateTime.Now;
 
             // Draw the second hand.
-            PointF center = new PointF(0, 0);
-            int second_x_factor = (int)(0.4f * ClientSize.Width);
-            int second_y_factor = (int)(0.4f * ClientSize.Height);
-            double second_angle = -Math.PI / 2 +
-                2 * Math.PI * (int)(now.Second) / 60.0;
-
             gr.FillPie(Brushes.Coral,
                 -ClientSize.Width / 2f + 4f, -ClientSize.Height / 2f + 4f,
                 ClientSize.Width - 8f, ClientSize.Height - 8f,
                 -90.0f, 6*(now.Second % 60));
-            //PointF second_pt = new PointF(
-            //    (float)(second_x_factor * Math.Cos(second_angle)),
-            //    (float)(second_y_factor * Math.Sin(second_angle)));
-            //gr.DrawLine(hand_pen, second_pt, center);
 
             // Outline
             gr.DrawEllipse(border_pen,
