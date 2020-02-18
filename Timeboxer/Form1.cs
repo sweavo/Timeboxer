@@ -88,13 +88,19 @@ namespace Timeboxer
             }
 
             // Draw the mouse position
-            gr.FillRectangle(Brushes.Green, last_mouse.X-ClientRectangle.Width/2, last_mouse.Y-ClientRectangle.Height/2, 5,5);
+            gr.FillRectangle(Brushes.Green, last_mouse.X, last_mouse.Y, 5,5);
+            
             
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            last_mouse = e.Location;
+            if (e.Button==MouseButtons.Left)
+            {
+                last_mouse.X = e.Location.X-ClientRectangle.Width/2;
+                last_mouse.Y = e.Location.Y - ClientRectangle.Height / 2;
+            }
+
             Refresh();
         }
     }
