@@ -20,7 +20,7 @@ namespace Timeboxer
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-
+            Refresh();
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -32,7 +32,7 @@ namespace Timeboxer
                 ClientSize.Width / 2,
                 ClientSize.Height / 2);
 
-            using (Pen thick_pen = new Pen(Color.Blue, 4))
+            using (Pen thick_pen = new Pen(Color.Black, 4))
             {
                 // Outline
                 gr.DrawEllipse(thick_pen, 
@@ -72,6 +72,23 @@ namespace Timeboxer
                         gr.DrawLine(Pens.Blue, inner_pt, outer_pt);
                     }
                 }
+            }
+
+            using (Pen thick_pen = new Pen(Color.Red, 4))
+            {
+                // Get the hour and minute plus any fraction that has elapsed.
+                DateTime now = DateTime.Now;
+
+                // Draw the second hand.
+                PointF center = new PointF(0, 0);
+                float second_x_factor = 0.4f * ClientSize.Width;
+                float second_y_factor = 0.4f * ClientSize.Height;
+                double second_angle = -Math.PI / 2 +
+                    2 * Math.PI * (int)(now.Second) / 60.0;
+                PointF second_pt = new PointF(
+                    (float)(second_x_factor * Math.Cos(second_angle)),
+                    (float)(second_y_factor * Math.Sin(second_angle)));
+                gr.DrawLine(Pens.Red, second_pt, center);
             }
         }
     }
