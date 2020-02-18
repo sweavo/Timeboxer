@@ -90,8 +90,9 @@ namespace Timeboxer
                     gr.DrawLine(thin_tick_pen, inner_pt, outer_pt);
                 }
             }
-            TextRenderer.DrawText(gr, ((int)ts.TotalSeconds).ToString(), this.Font, ClientRectangle, Color.Black, Color.WhiteSmoke, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter );
-
+            //TextRenderer.DrawText(gr, ((int)ts.TotalSeconds).ToString(), this.Font, ClientRectangle, Color.Black, Color.WhiteSmoke, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter );
+            Point text_point = new Point(-16, -8);
+            gr.DrawString(((int)ts.TotalSeconds).ToString(), this.Font, Brushes.Black, text_point);
         }
 
         // Return angle from origin to point in positive degrees
