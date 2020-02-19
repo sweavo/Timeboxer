@@ -50,6 +50,13 @@ namespace Timeboxer
             }
         }
 
+        private string RemainingTime
+        {
+            get
+            {
+                return ((int)RemainingSeconds).ToString();
+            }
+        }
         // Sweep: number of degrees (360 deg =1 hour) remaining
         private float Sweep
         {
@@ -130,7 +137,9 @@ namespace Timeboxer
                     draw_tick(gr, thin_tick_pen, angle, small_tick_r_from, tick_r_to);
                 }
             }
-            draw_text_centered(gr, ORIGIN, ((int)RemainingSeconds).ToString(), Font, Brushes.Black);
+            
+            // Write the time in the middle
+            draw_text_centered(gr, ORIGIN, RemainingTime, Font, Brushes.Black);
         }
 
         // Return angle from origin to point in positive degrees
@@ -145,7 +154,6 @@ namespace Timeboxer
             {
                 return first_try;
             }
-
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
