@@ -180,9 +180,7 @@ namespace Timeboxer
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             Point mouse_at = e.Location;
-            // Convert to transformed coords
-            mouse_at.X = mouse_at.X - ClientRectangle.Width / 2;
-            mouse_at.Y = mouse_at.Y - ClientRectangle.Height / 2;
+            mouse_at.Offset(-ClientRectangle.Width / 2, -ClientRectangle.Height / 2);
 
             if (e.Button == MouseButtons.Right)
             {
@@ -219,6 +217,20 @@ namespace Timeboxer
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
+        }
+
+        private void pictureBox1_DoubleClick(object sender, EventArgs e)
+        {
+            if (is_active)
+            {
+                alarm_time = DateTime.Now;
+                is_active = false;
+            }
+            else
+            {
+                Close();
+            }
+
         }
     }
 }
