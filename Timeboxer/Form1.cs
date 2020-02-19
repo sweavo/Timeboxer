@@ -120,7 +120,8 @@ namespace Timeboxer
             }
             //TextRenderer.DrawText(gr, ((int)ts.TotalSeconds).ToString(), this.Font, ClientRectangle, Color.Black, Color.WhiteSmoke, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter );
             Point text_point = new Point(-16, -8);
-            gr.DrawString(((int)RemainingSeconds).ToString(), this.Font, Brushes.Black, text_point);
+            String time_text = ((int)RemainingSeconds).ToString();
+            gr.DrawString(time_text, this.Font, Brushes.Black, text_point);
         }
 
         // Return angle from origin to point in positive degrees
