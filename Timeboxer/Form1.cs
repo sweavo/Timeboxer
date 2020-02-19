@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using System.Media;
 using System.Windows.Forms;
 
 namespace Timeboxer
@@ -27,6 +28,8 @@ namespace Timeboxer
         private static float big_tick_r_from = 0.8f;
         private static float small_tick_r_from = 0.85f;
         private static float tick_r_to = 0.9f;
+
+        private static bool is_active = false;
 
         public TimeboxerForm()
         {
@@ -126,7 +129,7 @@ namespace Timeboxer
 
             // Bezel and dot
             gr.DrawEllipse(border_pen, pad_rectangle);
-            gr.FillEllipse(border_brush, new Rectangle(-border_pixels, -border_pixels, 2*border_pixels, 2*border_pixels));
+            gr.FillEllipse(border_brush, new Rectangle(-border_pixels, -border_pixels, 2 * border_pixels, 2 * border_pixels));
 
             // Draw the tick marks.
             for (int minute = 1; minute <= 60; minute++)
@@ -143,7 +146,8 @@ namespace Timeboxer
             }
 
             // Write the time in the middle
-            draw_text_centered(gr, new Point(0, ClientRectangle.Height / 6), RemainingTime, Font, Brushes.Black);
+            if (is_active)
+                draw_text_centered(gr, new Point(0, ClientRectangle.Height / 6), RemainingTime, Font, Brushes.Black);
         }
 
         // Return angle from origin to point in positive degrees
@@ -181,6 +185,17 @@ namespace Timeboxer
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            if (is_active && (alarm_time <= DateTime.Now)) // transition to inactive
+            {
+                SoundPlayer doneSound= new SoundPlayer(Properties.Resources.FinishedSound);
+                doneSound.Play();
+                is_active = false;
+            }
+            else if (!is_active && (alarm_time > DateTime.Now)) // transition to active
+            {
+                is_active = true;
+            }
+
             Refresh();
         }
     }
