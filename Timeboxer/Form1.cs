@@ -36,14 +36,12 @@ namespace Timeboxer
                 return (float)ts.TotalSeconds;
             }
         }
+        // Sweep: number of degrees (360 deg =1 hour) remaining
         private float Sweep
         {
             get
             {
-                // Get the hour and minute plus any fraction that has elapsed.
-                DateTime now = DateTime.Now;
-                TimeSpan ts = alarm_time - now;
-                return 6f * (float)(ts.TotalMinutes);
+                return (float)(RemainingSeconds/10.0f);
 
             }
         }
