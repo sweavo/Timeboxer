@@ -27,6 +27,26 @@ namespace Timeboxer
             alarm_time = DateTime.Now;
 
         }
+        private float RemainingSeconds
+        {
+            get
+            {
+                DateTime now = DateTime.Now;
+                TimeSpan ts = alarm_time - now;
+                return (float)ts.TotalSeconds;
+            }
+        }
+        private float Sweep
+        {
+            get
+            {
+                // Get the hour and minute plus any fraction that has elapsed.
+                DateTime now = DateTime.Now;
+                TimeSpan ts = alarm_time - now;
+                return 6f * (float)(ts.TotalMinutes);
+
+            }
+        }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
@@ -42,10 +62,6 @@ namespace Timeboxer
                 ClientSize.Width / 2,
                 ClientSize.Height / 2);
 
-            // Get the hour and minute plus any fraction that has elapsed.
-            DateTime now = DateTime.Now;
-            TimeSpan ts = alarm_time - now;
-            float sweep = 6f * (float)(ts.TotalMinutes);
 
             // We're going to draw arcs and pies in a common rectangle, which i the client rectangle minus some padding:
             Rectangle pad_rectangle = new Rectangle(
@@ -56,7 +72,7 @@ namespace Timeboxer
             // Draw the second hand.
             gr.FillPie(Brushes.Coral,
                 pad_rectangle,
-                -90.0f, sweep);
+                -90.0f, this.Sweep);
 
             // Outline
             gr.DrawEllipse(border_pen,
@@ -96,7 +112,7 @@ namespace Timeboxer
             }
             //TextRenderer.DrawText(gr, ((int)ts.TotalSeconds).ToString(), this.Font, ClientRectangle, Color.Black, Color.WhiteSmoke, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter );
             Point text_point = new Point(-16, -8);
-            gr.DrawString(((int)ts.TotalSeconds).ToString(), this.Font, Brushes.Black, text_point);
+            gr.DrawString(((int)RemainingSeconds).ToString(), this.Font, Brushes.Black, text_point);
         }
 
         // Return angle from origin to point in positive degrees
