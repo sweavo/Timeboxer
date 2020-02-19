@@ -10,21 +10,23 @@ namespace Timeboxer
     {
         private static Point ORIGIN = new Point(0, 0);
 
-        private const float FACE_ANGLE_TOP = -90.0f;
+        private static float FACE_ANGLE_TOP = -90.0f;
 
         private DateTime alarm_time;
         private double mouse_angle;
 
-        private Brush face_brush = Brushes.White;
-        private Brush pie_brush = Brushes.Coral;
-        private Pen border_pen = new Pen(Color.Black, 4);
-        private Pen thick_tick_pen; // see ctor
-        private Pen thin_tick_pen = Pens.Black;
+        private static Brush face_brush = Brushes.White;
+        private static Brush pie_brush = Brushes.Coral;
+        private static int border_pixels = 4;
+        private static Pen border_pen = new Pen(Color.Black, border_pixels);
+        private static Brush border_brush = Brushes.Black;
+        private static Pen thick_tick_pen; // see ctor
+        private static Pen thin_tick_pen = Pens.Black;
 
         // radii of ticks, as a proportion of the available radius
-        private float big_tick_r_from = 0.8f;
-        private float small_tick_r_from = 0.85f;
-        private float tick_r_to = 0.9f;
+        private static float big_tick_r_from = 0.8f;
+        private static float small_tick_r_from = 0.85f;
+        private static float tick_r_to = 0.9f;
 
         public TimeboxerForm()
         {
@@ -86,7 +88,7 @@ namespace Timeboxer
 
         }
 
-        private void draw_text_centered(Graphics g, Point where, string text, Font font, Brush brush )
+        private void draw_text_centered(Graphics g, Point where, string text, Font font, Brush brush)
         {
             SizeF text_bbox = g.MeasureString(text, font);
             Point text_point = new Point(
@@ -122,8 +124,9 @@ namespace Timeboxer
             // Draw the sweep
             gr.FillPie(pie_brush, pad_rectangle, FACE_ANGLE_TOP, this.Sweep);
 
-            // Bezel
+            // Bezel and dot
             gr.DrawEllipse(border_pen, pad_rectangle);
+            gr.FillEllipse(border_brush, new Rectangle(-border_pixels, -border_pixels, 2*border_pixels, 2*border_pixels));
 
             // Draw the tick marks.
             for (int minute = 1; minute <= 60; minute++)
@@ -138,9 +141,9 @@ namespace Timeboxer
                     draw_tick(gr, thin_tick_pen, angle, small_tick_r_from, tick_r_to);
                 }
             }
-            
+
             // Write the time in the middle
-            draw_text_centered(gr, ORIGIN, RemainingTime, Font, Brushes.Black);
+            draw_text_centered(gr, new Point(0, ClientRectangle.Height / 6), RemainingTime, Font, Brushes.Black);
         }
 
         // Return angle from origin to point in positive degrees
