@@ -75,6 +75,7 @@ namespace Timeboxer
             gr.DrawLine(p, inner_pt, outer_pt);
 
         }
+
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
 
@@ -118,9 +119,11 @@ namespace Timeboxer
                     draw_tick(gr, thin_tick_pen, angle, small_tick_r_from, tick_r_to);
                 }
             }
-            //TextRenderer.DrawText(gr, ((int)ts.TotalSeconds).ToString(), this.Font, ClientRectangle, Color.Black, Color.WhiteSmoke, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter );
-            Point text_point = new Point(-16, -8);
-            String time_text = ((int)RemainingSeconds).ToString();
+            string time_text = ((int)RemainingSeconds).ToString();
+            SizeF time_text_bbox = gr.MeasureString(time_text, Font);
+            Point text_point = new Point(
+                -(int)(time_text_bbox.Width/2),
+                -(int)(time_text_bbox.Height/2));
             gr.DrawString(time_text, this.Font, Brushes.Black, text_point);
         }
 
