@@ -54,7 +54,8 @@ namespace Timeboxer
         {
             get
             {
-                return ((int)RemainingSeconds).ToString();
+                TimeSpan time = TimeSpan.FromSeconds(RemainingSeconds);
+                return time.ToString(@"mm\:ss");
             }
         }
         // Sweep: number of degrees (360 deg =1 hour) remaining
