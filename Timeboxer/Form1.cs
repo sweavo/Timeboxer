@@ -177,6 +177,12 @@ namespace Timeboxer
             }
         }
 
+        // Round to nearest _granularity_
+        private int Quantize( int input, int granularity)
+        {
+            return granularity * (int)((input + (granularity / 2)) / granularity);
+        }
+
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             Point mouse_at = e.Location;
@@ -185,9 +191,9 @@ namespace Timeboxer
             if (e.Button == MouseButtons.Right)
             {
                 // Get angle through the mouse position
-                mouse_angle = get_angle_from_vector(mouse_at);
+                mouse_angle = Quantize( (int)get_angle_from_vector(mouse_at), 3);
 
-                double mouse_period = mouse_angle / 6.0;
+                double mouse_period = mouse_angle / 6.0 + (1.0/60.0);
                 alarm_time = DateTime.Now.AddMinutes(mouse_period);
             }
 
