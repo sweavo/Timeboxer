@@ -8,6 +8,8 @@ namespace Timeboxer
 {
     public partial class TimeboxerForm : Form
     {
+        private static Point ORIGIN = new Point(0, 0);
+
         private const float FACE_ANGLE_TOP = -90.0f;
 
         private DateTime alarm_time;
@@ -76,6 +78,15 @@ namespace Timeboxer
 
         }
 
+        private void draw_text_centered(Graphics g, Point where, string text, Font font, Brush brush )
+        {
+            SizeF text_bbox = g.MeasureString(text, font);
+            Point text_point = new Point(
+                where.X - (int)(text_bbox.Width / 2),
+                where.Y - (int)(text_bbox.Height / 2));
+            g.DrawString(text, font, brush, text_point);
+        }
+
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
 
@@ -119,12 +130,7 @@ namespace Timeboxer
                     draw_tick(gr, thin_tick_pen, angle, small_tick_r_from, tick_r_to);
                 }
             }
-            string time_text = ((int)RemainingSeconds).ToString();
-            SizeF time_text_bbox = gr.MeasureString(time_text, Font);
-            Point text_point = new Point(
-                -(int)(time_text_bbox.Width/2),
-                -(int)(time_text_bbox.Height/2));
-            gr.DrawString(time_text, this.Font, Brushes.Black, text_point);
+            draw_text_centered(gr, ORIGIN, ((int)RemainingSeconds).ToString(), Font, Brushes.Black);
         }
 
         // Return angle from origin to point in positive degrees
