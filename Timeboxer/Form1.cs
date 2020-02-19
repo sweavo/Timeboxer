@@ -187,7 +187,7 @@ namespace Timeboxer
         {
             if (is_active && (alarm_time <= DateTime.Now)) // transition to inactive
             {
-                SoundPlayer doneSound= new SoundPlayer(Properties.Resources.FinishedSound);
+                SoundPlayer doneSound = new SoundPlayer(Properties.Resources.FinishedSound);
                 doneSound.Play();
                 is_active = false;
             }
