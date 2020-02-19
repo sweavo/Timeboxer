@@ -58,6 +58,9 @@ namespace Timeboxer
             }
         }
 
+        private void draw_tick(Pen p, double angle, float inner_r, float outer_r)
+        {
+        }
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
 
@@ -100,13 +103,13 @@ namespace Timeboxer
             for (int minute = 1; minute <= 60; minute++)
             {
                 double angle = Math.PI * minute / 30.0;
-                float cos_angle = (float)Math.Cos(angle);
-                float sin_angle = (float)Math.Sin(angle);
-                PointF outer_pt = new PointF(
-                    outer_x_factor * cos_angle,
-                    outer_y_factor * sin_angle);
                 if (minute % 5 == 0)
                 {
+                    float cos_angle = (float)Math.Cos(angle);
+                    float sin_angle = (float)Math.Sin(angle);
+                    PointF outer_pt = new PointF(
+                        outer_x_factor * cos_angle,
+                        outer_y_factor * sin_angle);
                     PointF inner_pt = new PointF(
                         big_x_factor * cos_angle,
                         big_y_factor * sin_angle);
@@ -114,6 +117,11 @@ namespace Timeboxer
                 }
                 else
                 {
+                    float cos_angle = (float)Math.Cos(angle);
+                    float sin_angle = (float)Math.Sin(angle);
+                    PointF outer_pt = new PointF(
+                        outer_x_factor * cos_angle,
+                        outer_y_factor * sin_angle);
                     PointF inner_pt = new PointF(
                         inner_x_factor * cos_angle,
                         inner_y_factor * sin_angle);
