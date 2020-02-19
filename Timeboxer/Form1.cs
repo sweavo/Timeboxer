@@ -4,11 +4,24 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Media;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace Timeboxer
 {
     public partial class TimeboxerForm : Form
     {
+        // for delegating mouse dragging of the form
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd,
+                         int Msg, int wParam, int lParam);
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+
+        // For drawing clock faces, etc.
         private static Point ORIGIN = new Point(0, 0);
 
         private static float FACE_ANGLE_TOP = -90.0f;
@@ -171,7 +184,7 @@ namespace Timeboxer
             mouse_at.X = mouse_at.X - ClientRectangle.Width / 2;
             mouse_at.Y = mouse_at.Y - ClientRectangle.Height / 2;
 
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Right)
             {
                 // Get angle through the mouse position
                 mouse_angle = get_angle_from_vector(mouse_at);
@@ -197,6 +210,15 @@ namespace Timeboxer
             }
 
             Refresh();
+        }
+
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
         }
     }
 }
