@@ -1,34 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Timeboxer
 {
     public partial class TimeboxerForm : Form
     {
-        private DateTime alarm_time = DateTime.Now;
-        private double mouse_angle= 0.0;
+        private DateTime alarm_time;
+        private double mouse_angle;
+
+        private Pen border_pen= new Pen(Color.Black, 4);
+        private Pen thick_tick_pen; // see ctor
+        private Pen thin_tick_pen = Pens.Black;
+
         public TimeboxerForm()
         {
             InitializeComponent();
+
+            // Moar UI initialization, not managed by the designer
+            thick_tick_pen = new Pen(Color.Black, 4);
+            thick_tick_pen.StartCap = LineCap.Triangle;
+
+            // Initialize app state
+            alarm_time = DateTime.Now;
+
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            Pen border_pen = new Pen(Color.Black, 4);
-
-            Pen thick_tick_pen = new Pen(Color.Black, 4);
-            thick_tick_pen.StartCap = LineCap.Triangle;
-
-            Pen thin_tick_pen = Pens.Black;
 
             Graphics gr = e.Graphics;
             gr.Clear(this.TransparencyKey); 
