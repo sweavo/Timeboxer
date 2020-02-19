@@ -33,7 +33,7 @@ namespace Timeboxer
             {
                 DateTime now = DateTime.Now;
                 TimeSpan ts = alarm_time - now;
-                return (float)ts.TotalSeconds;
+                return Math.Max((float)ts.TotalSeconds, 0f);
             }
         }
         // Sweep: number of degrees (360 deg =1 hour) remaining
