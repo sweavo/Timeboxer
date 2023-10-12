@@ -32,9 +32,15 @@ To quit, right-double-click the face.
 To run multiple timers, run multiple instances of `Timeboxer.exe`
 
 
-Now! Unleash the power of the command line!
--------------------------------------------
+Highlander update!
+------------------
 
-It takes 1 optional argument, which is the number of minutes you want the timer to run.
+If you provide an integral argument to Timeboxer, then it kills all other instances of Timeboxer (There shall be only one!)
 
-Make a shortcut with `Timeboxer.exe 25` in it!  Call it "Pomodoro" and leave it on your desktop!
+Then it sets itself to the number of minutes provided on the command line.  If you provide zero, then you end up with no Timeboxers.
+
+Suggestion: use shortcuts or your stream deck to call:
+
+* `Timeboxer.exe 25` - call it "Pomodoro"
+* `Timeboxer.exe 5`  - call it "Short Break"
+* `Timeboxer.exe 0`  - call it "No Pomodoro"
