@@ -27,6 +27,7 @@ namespace Timeboxer
         private static float FACE_ANGLE_TOP = -90.0f;
 
         public DateTime alarm_time;
+        private int alarm_time_show_ticks = 0;
         private double mouse_angle;
 
         private static Brush face_brush = Brushes.White;
@@ -160,7 +161,14 @@ namespace Timeboxer
 
             // Write the time in the middle
             if (is_active)
+            {
                 draw_text_centered(gr, new Point(0, ClientRectangle.Height / 6), RemainingTime, Font, Brushes.Black);
+                if (alarm_time_show_ticks > 0)
+                {
+                    draw_text_centered(gr, new Point(0, ClientRectangle.Height / 4), alarm_time.ToLocalTime().TimeOfDay.ToString("hh\\:mm"), Font, Brushes.Black);
+                }
+            }
+
         }
 
         // Return angle from origin to point in positive degrees
@@ -201,6 +209,7 @@ namespace Timeboxer
 
                 double mouse_period = mouse_angle / 6.0 + (1.0/60.0);
                 alarm_time = DateTime.Now.AddMinutes(mouse_period);
+                alarm_time_show_ticks = 12; // 4 per second
             }
 
             Refresh();
@@ -208,6 +217,11 @@ namespace Timeboxer
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            if (alarm_time_show_ticks > 0)
+            {
+               alarm_time_show_ticks--;
+            }
+
             if (is_active && (alarm_time <= DateTime.Now)) // transition to inactive
             {
                 SoundPlayer doneSound = new SoundPlayer(Properties.Resources.FinishedSound);
