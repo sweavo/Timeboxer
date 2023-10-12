@@ -188,6 +188,12 @@ namespace Timeboxer
             Point mouse_at = e.Location;
             mouse_at.Offset(-ClientRectangle.Width / 2, -ClientRectangle.Height / 2);
 
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+
             if (e.Button == MouseButtons.Right)
             {
                 // Get angle through the mouse position
@@ -214,15 +220,6 @@ namespace Timeboxer
             }
 
             Refresh();
-        }
-
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
-            }
         }
 
         private void pictureBox1_DoubleClick(object sender, EventArgs e)
