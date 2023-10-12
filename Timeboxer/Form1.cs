@@ -26,7 +26,7 @@ namespace Timeboxer
 
         private static float FACE_ANGLE_TOP = -90.0f;
 
-        private DateTime alarm_time;
+        public DateTime alarm_time;
         private double mouse_angle;
 
         private static Brush face_brush = Brushes.White;

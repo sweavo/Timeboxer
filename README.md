@@ -31,3 +31,10 @@ To quit, right-double-click the face.
 
 To run multiple timers, run multiple instances of `Timeboxer.exe`
 
+
+Now! Unleash the power of the command line!
+-------------------------------------------
+
+It takes 1 optional argument, which is the number of minutes you want the timer to run.
+
+Make a shortcut with `Timeboxer.exe 25` in it!  Call it "Pomodoro" and leave it on your desktop!
