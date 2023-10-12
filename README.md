@@ -27,15 +27,15 @@ To move the timer, drag it using the left mouse.
 
 To set the time, use the right mousebutton to drag the sweep anywhere between 0 and 60m.  Release and the timer begins.
 
-To quit, right-double-click the face.
+To cancel the timer, double-click the face.  double-click again to quit.
 
 To run multiple timers, run multiple instances of `Timeboxer.exe`
 
 
-Highlander update!
-------------------
+Highlander update! 2023-10-12
+-----------------------------
 
-If you provide an integral argument to Timeboxer, then it kills all other instances of Timeboxer (There shall be only one!)
+### If you provide an integral argument to Timeboxer, then it kills all other instances of Timeboxer (There shall be only one!)
 
 Then it sets itself to the number of minutes provided on the command line.  If you provide zero, then you end up with no Timeboxers.
 
@@ -44,3 +44,12 @@ Suggestion: use shortcuts or your stream deck to call:
 * `Timeboxer.exe 25` - call it "Pomodoro"
 * `Timeboxer.exe 5`  - call it "Short Break"
 * `Timeboxer.exe 0`  - call it "No Pomodoro"
+
+
+### While moving the sweep, also shows the time-of-day of the alarm.
+
+Now, set your countdown timer to the end of the meeting without doing math in your head.
+
+### Double click with left mouse!
+
+Because of the way I implemented dragging, the double-click to clear the time or close the app had to be with the right mouse button.  No more!
