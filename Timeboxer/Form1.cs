@@ -165,7 +165,8 @@ namespace Timeboxer
                 draw_text_centered(gr, new Point(0, ClientRectangle.Height / 6), RemainingTime, Font, Brushes.Black);
                 if (alarm_time_show_ticks > 0)
                 {
-                    draw_text_centered(gr, new Point(0, ClientRectangle.Height / 4), alarm_time.ToLocalTime().TimeOfDay.ToString("hh\\:mm"), Font, Brushes.Black);
+                    Font spindly = new Font(Font.Name, 8, FontStyle.Regular);
+                    draw_text_centered(gr, new Point(0, ClientRectangle.Height / 4), "Until " + alarm_time.ToLocalTime().TimeOfDay.ToString("hh\\:mm"), spindly, Brushes.Black);
                 }
             }
 

@@ -31,6 +31,12 @@ To cancel the timer, double-click the face.  double-click again to quit.
 
 To run multiple timers, run multiple instances of `Timeboxer.exe`
 
+Highlander+ update 2023-10-18
+-----------------------------
+
+Received a couple of notes about useability, and was gifted an icon!
+
+So now it's clearer what is the remaining time and what is the alarm time, and there's an icon.
 
 Highlander update! 2023-10-12
 -----------------------------
