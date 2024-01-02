@@ -2,9 +2,11 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using System.Drawing.Imaging;
 using System.Media;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace Timeboxer
 {
@@ -87,12 +89,12 @@ namespace Timeboxer
             }
         }
 
-        private void draw_tick(Graphics gr, Pen p, double angle, float inner_r, float outer_r)
+        private void draw_tick(Graphics gr, int width, int height, Pen p, double angle, float inner_r, float outer_r)
         {
-            float outer_x_factor = outer_r * ClientSize.Width / 2;
-            float outer_y_factor = outer_r * ClientSize.Height / 2;
-            float inner_x_factor = inner_r * ClientSize.Width / 2;
-            float inner_y_factor = inner_r * ClientSize.Height / 2;
+            float outer_x_factor = outer_r * width / 2;
+            float outer_y_factor = outer_r * height / 2;
+            float inner_x_factor = inner_r * width / 2;
+            float inner_y_factor = inner_r * height / 2;
             float cos_angle = (float)Math.Cos(angle);
             float sin_angle = (float)Math.Sin(angle);
             PointF outer_pt = new PointF(
@@ -149,11 +151,11 @@ namespace Timeboxer
                 double angle = Math.PI * minute / 30.0;
                 if (minute % 5 == 0)
                 {
-                    draw_tick(gr, thick_tick_pen, angle, big_tick_r_from, tick_r_to);
+                    draw_tick(gr, clientSize.Width, clientSize.Height, thick_tick_pen, angle, big_tick_r_from, tick_r_to);
                 }
                 else
                 {
-                    draw_tick(gr, thin_tick_pen, angle, small_tick_r_from, tick_r_to);
+                    draw_tick(gr, clientSize.Width, clientSize.Height, thin_tick_pen, angle, small_tick_r_from, tick_r_to);
                 }
             }
 
@@ -238,14 +240,47 @@ namespace Timeboxer
             {
                 is_active = true;
             }
-
+            
             Refresh();
         }
 
+        private static Bitmap ResizeImage(Image image, int width, int height)
+        {
+            var destRect = new Rectangle(0, 0, width, height);
+            var destImage = new Bitmap(width, height);
+
+            destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+            using (var graphics = Graphics.FromImage(destImage))
+            {
+                graphics.CompositingMode = CompositingMode.SourceCopy;
+                graphics.CompositingQuality = CompositingQuality.HighQuality;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphics.SmoothingMode = SmoothingMode.HighQuality;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                using (var wrapMode = new ImageAttributes())
+                {
+                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+                    graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
+                }
+            }
+
+            return destImage;
+        }
         private void pictureBox1_DoubleClick(object sender, EventArgs e)
         {
             if (is_active)
             {
+                // nasty hack to draw a set of icons
+                //Size canvasSize = new Size(96, 96);
+                //Bitmap bmp = new Bitmap(canvasSize.Width, canvasSize.Height);
+                //using (Graphics g = Graphics.FromImage(bmp))
+                //{
+                //    draw_clockface(g, canvasSize, Sweep, true, RemainingTime, false);
+                //}
+                //bmp.Save("timeboxer.png", ImageFormat.Icon);
+
                 alarm_time = DateTime.Now;
                 is_active = false;
             }
