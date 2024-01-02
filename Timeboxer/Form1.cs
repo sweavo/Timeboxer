@@ -114,10 +114,8 @@ namespace Timeboxer
             g.DrawString(text, font, brush, text_point);
         }
 
-        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        private void draw_clockface(Graphics gr, Size clientSize, Rectangle clientRect, float sweep, bool showRemaining, string remainingTime, bool showAlarmTime) 
         {
-
-            Graphics gr = e.Graphics;
             gr.Clear(this.TransparencyKey);
 
             gr.SmoothingMode = SmoothingMode.AntiAlias;
@@ -125,13 +123,13 @@ namespace Timeboxer
 
             // Put origin in centre of client area
             gr.TranslateTransform(
-                ClientSize.Width / 2,
-                ClientSize.Height / 2);
+                clientSize.Width / 2,
+                clientSize.Height / 2);
 
             // We're going to draw arcs and pies in a common rectangle, which is the client rectangle minus some padding:
             Rectangle pad_rectangle = new Rectangle(
-                -ClientSize.Width / 2 + 4, -ClientSize.Height / 2 + 4,
-                ClientSize.Width - 8, ClientSize.Height - 8);
+                -clientSize.Width / 2 + 4, -clientSize.Height / 2 + 4,
+                clientSize.Width - 8, clientSize.Height - 8);
 
             // Now the drawing, in z-order
 
@@ -139,7 +137,7 @@ namespace Timeboxer
             gr.FillEllipse(face_brush, pad_rectangle);
 
             // Draw the sweep
-            gr.FillPie(pie_brush, pad_rectangle, FACE_ANGLE_TOP, this.Sweep);
+            gr.FillPie(pie_brush, pad_rectangle, FACE_ANGLE_TOP, sweep);
 
             // Bezel and dot
             gr.DrawEllipse(border_pen, pad_rectangle);
@@ -160,15 +158,21 @@ namespace Timeboxer
             }
 
             // Write the time in the middle
-            if (is_active)
+            if (showRemaining)
             {
-                draw_text_centered(gr, new Point(0, ClientRectangle.Height / 6), RemainingTime, Font, Brushes.Black);
-                if (alarm_time_show_ticks > 0)
-                {
-                    Font spindly = new Font(Font.Name, 8, FontStyle.Regular);
-                    draw_text_centered(gr, new Point(0, ClientRectangle.Height / 4), "Until " + alarm_time.ToLocalTime().TimeOfDay.ToString("hh\\:mm"), spindly, Brushes.Black);
-                }
+                draw_text_centered(gr, new Point(0, clientRect.Height / 6), remainingTime, Font, Brushes.Black);
             }
+            if (showAlarmTime)
+            {
+                Font spindly = new Font(Font.Name, 8, FontStyle.Regular);
+                draw_text_centered(gr, new Point(0, clientRect.Height / 4), "Until " + alarm_time.ToLocalTime().TimeOfDay.ToString("hh\\:mm"), spindly, Brushes.Black);
+            }
+        }
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics gr = e.Graphics;
+
+            draw_clockface(gr, ClientSize, ClientRectangle, this.Sweep, is_active, RemainingTime, is_active && alarm_time_show_ticks > 0);
 
         }
 
