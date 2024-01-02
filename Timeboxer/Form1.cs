@@ -114,7 +114,7 @@ namespace Timeboxer
             g.DrawString(text, font, brush, text_point);
         }
 
-        private void draw_clockface(Graphics gr, Size clientSize, Rectangle clientRect, float sweep, bool showRemaining, string remainingTime, bool showAlarmTime) 
+        private void draw_clockface(Graphics gr, Size clientSize, float sweep, bool showRemaining, string remainingTime, bool showAlarmTime) 
         {
             gr.Clear(this.TransparencyKey);
 
@@ -160,19 +160,20 @@ namespace Timeboxer
             // Write the time in the middle
             if (showRemaining)
             {
-                draw_text_centered(gr, new Point(0, clientRect.Height / 6), remainingTime, Font, Brushes.Black);
+                draw_text_centered(gr, new Point(0, clientSize.Height / 6), remainingTime, Font, Brushes.Black);
             }
             if (showAlarmTime)
             {
                 Font spindly = new Font(Font.Name, 8, FontStyle.Regular);
-                draw_text_centered(gr, new Point(0, clientRect.Height / 4), "Until " + alarm_time.ToLocalTime().TimeOfDay.ToString("hh\\:mm"), spindly, Brushes.Black);
+                draw_text_centered(gr, new Point(0, clientSize.Height / 4), "Until " + alarm_time.ToLocalTime().TimeOfDay.ToString("hh\\:mm"), spindly, Brushes.Black);
             }
         }
+
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             Graphics gr = e.Graphics;
 
-            draw_clockface(gr, ClientSize, ClientRectangle, this.Sweep, is_active, RemainingTime, is_active && alarm_time_show_ticks > 0);
+            draw_clockface(gr, ClientSize, this.Sweep, is_active, RemainingTime, is_active && alarm_time_show_ticks > 0);
 
         }
 
