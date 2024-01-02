@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>TB1.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\TB1.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -88,7 +88,7 @@
     <None Include="Resources\reception_bell_single_2020.wav" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TB1.ico" />
+    <Content Include="Resources\TB1.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
