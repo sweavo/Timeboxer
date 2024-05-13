@@ -1,4 +1,6 @@
-﻿namespace Timeboxer
+﻿using System.Runtime.CompilerServices;
+
+namespace Timeboxer
 {
     partial class TimeboxerForm
     {
