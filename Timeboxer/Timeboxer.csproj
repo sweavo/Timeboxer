@@ -34,7 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\TB1.ico</ApplicationIcon>
+    <ApplicationIcon>timeboxer.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Timeboxer.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -88,7 +91,8 @@
     <None Include="Resources\reception_bell_single_2020.wav" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\TB1.ico" />
+    <Content Include="Resources\timeboxer.ico" />
+    <Content Include="timeboxer.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
