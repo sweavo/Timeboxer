@@ -243,7 +243,7 @@ namespace Timeboxer
             
             Refresh();
         }
-
+# ifdef GENERATE_ICONS
         private static Bitmap ResizeImage(Image image, int width, int height)
         {
             var destRect = new Rectangle(0, 0, width, height);
@@ -268,19 +268,21 @@ namespace Timeboxer
 
             return destImage;
         }
+#endif
         private void pictureBox1_DoubleClick(object sender, EventArgs e)
         {
             if (is_active)
             {
-                // nasty hack to draw a set of icons
-                //Size canvasSize = new Size(96, 96);
-                //Bitmap bmp = new Bitmap(canvasSize.Width, canvasSize.Height);
-                //using (Graphics g = Graphics.FromImage(bmp))
-                //{
-                //    draw_clockface(g, canvasSize, Sweep, true, RemainingTime, false);
-                //}
-                //bmp.Save("timeboxer.png", ImageFormat.Icon);
-
+# ifdef GENERATE_ICONS
+                 nasty hack to draw a set of icons
+                Size canvasSize = new Size(96, 96);
+                Bitmap bmp = new Bitmap(canvasSize.Width, canvasSize.Height);
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    draw_clockface(g, canvasSize, Sweep, true, RemainingTime, false);
+                }
+                bmp.Save("timeboxer.png", ImageFormat.Icon);
+#endif
                 alarm_time = DateTime.Now;
                 is_active = false;
             }
