@@ -26,24 +26,24 @@ namespace Timeboxer
         // For drawing clock faces, etc.
         private static Point ORIGIN = new Point(0, 0);
 
-        private static float FACE_ANGLE_TOP = -90.0f;
+        private static readonly float FACE_ANGLE_TOP = -90.0f;
 
         public DateTime alarm_time;
         private int alarm_time_show_ticks = 0;
         private double mouse_angle;
 
-        private static Brush face_brush = Brushes.White;
-        private static Brush pie_brush = Brushes.Coral;
-        private static int border_pixels = 4;
-        private static Pen border_pen = new Pen(Color.Black, border_pixels);
-        private static Brush border_brush = Brushes.Black;
+        private static readonly Brush face_brush = Brushes.White;
+        private static readonly Brush pie_brush = Brushes.Coral;
+        private static readonly int border_pixels = 4;
+        private static readonly Pen border_pen = new Pen(Color.Black, border_pixels);
+        private static readonly Brush border_brush = Brushes.Black;
+        private static readonly Pen thin_tick_pen = Pens.Black;
         private static Pen thick_tick_pen; // see ctor
-        private static Pen thin_tick_pen = Pens.Black;
 
         // radii of ticks, as a proportion of the available radius
-        private static float big_tick_r_from = 0.8f;
-        private static float small_tick_r_from = 0.85f;
-        private static float tick_r_to = 0.9f;
+        private static readonly float big_tick_r_from = 0.8f;
+        private static readonly float small_tick_r_from = 0.85f;
+        private static readonly float tick_r_to = 0.9f;
 
         private static bool is_active = false;
 
