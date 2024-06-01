@@ -10,6 +10,14 @@ using System.IO;
 
 namespace Timeboxer
 {
+
+    public class FormPosition
+        // for saving and loading
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
+
     public partial class TimeboxerForm : Form
     {
         // for delegating mouse dragging of the form
@@ -24,8 +32,6 @@ namespace Timeboxer
 
 
         // For drawing clock faces, etc.
-        private static Point ORIGIN = new Point(0, 0);
-
         private static readonly float FACE_ANGLE_TOP = -90.0f;
 
         public DateTime alarm_time;
@@ -46,9 +52,39 @@ namespace Timeboxer
         private static readonly float tick_r_to = 0.9f;
 
         private static bool is_active = false;
+        private static string PositionFilePath = "formposition.json";
 
+        // Method to save the form position to a JSON file
+        private void SaveFormPosition()
+        {
+            var formPosition = new FormPosition
+            {
+                X = this.Location.X,
+                Y = this.Location.Y
+            };
+
+            string jsonString = JsonSerializer.Serialize(formPosition);
+            File.WriteAllText(PositionFilePath, jsonString);
+        }
+
+        // Method to load the form position from a JSON file
+        private void LoadFormPosition()
+        {
+            if (File.Exists(PositionFilePath))
+            {
+                string jsonString = File.ReadAllText(PositionFilePath);
+                var formPosition = JsonSerializer.Deserialize<FormPosition>(jsonString);
+
+                if (formPosition != null)
+                {
+                    this.StartPosition = FormStartPosition.Manual;
+                    this.Location = new System.Drawing.Point(formPosition.X, formPosition.Y);
+                }
+            }
+        }
         public TimeboxerForm()
         {
+            this.FormClosing += new FormClosingEventHandler(form_Closing);
             InitializeComponent();
 
             // Moar UI initialization, not managed by the designer
@@ -58,6 +94,7 @@ namespace Timeboxer
             // Initialize app state
             alarm_time = DateTime.Now;
 
+            LoadFormPosition();
         }
 
         // RemainingSeconds: The number of seconds remaining before the alarm time, or 0 if in the past.
