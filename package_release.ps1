@@ -5,8 +5,9 @@
 # Process is: 
 #
 # * In visual studio, use the project properties to set the version number
-# * rebuild project in Release Build
 # * Make sure the README talks about the latest features
+# * clone the repo to a temp workdir
+# * in the temp clone, rebuild project in Release Build (to check all needed files are committed)
 # * Test that you can drag the .exe someplace else and start it from there
 # * run this script. It reads the version resource from the exe and uses it to update the readme and to name the zipfile. It removes and replaces the Staging/ folder.
 # * Github things
