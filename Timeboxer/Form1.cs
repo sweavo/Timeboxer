@@ -57,9 +57,9 @@ namespace Timeboxer
         private static readonly float tick_r_to = 0.9f;
 
         private static bool is_active = false;
-        private static string PositionFilePath = "formposition.json";
+        private static string PositionFilePath = "_timeboxerposition.txt";
 
-        // Method to save the form position to a JSON file
+        // Method to save the form position to a file
         private void SaveFormPosition()
         {
             var formPosition = new FormPosition
@@ -72,15 +72,21 @@ namespace Timeboxer
             File.WriteAllText(PositionFilePath, this.Location.X.ToString() + "," + this.Location.Y.ToString());
         }
 
-        // Method to load the form position from a JSON file
+        // Method to load the form position from a file
         private void LoadFormPosition()
         {
             if (File.Exists(PositionFilePath))
             {
-                string jsonString = File.ReadAllText(PositionFilePath);
-                var formPosition = new FormPosition();
+                string contentString = File.ReadAllText(PositionFilePath);
+                string[] words = contentString.Split(',');
 
-                if (formPosition != null)
+                var formPosition = new FormPosition
+                {
+                    X = int.Parse(words[0]),
+                    Y = int.Parse(words[1])
+                };
+
+                if (formPosition != null) // currently never will be null; improve lines above to fail nicely on corrupt file
                 {
                     this.StartPosition = FormStartPosition.Manual;
                     this.Location = new System.Drawing.Point(formPosition.X, formPosition.Y);
