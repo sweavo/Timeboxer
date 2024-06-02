@@ -12,10 +12,15 @@ namespace Timeboxer
 {
 
     public class FormPosition
-        // for saving and loading
+    // for saving and loading
     {
         public int X { get; set; }
         public int Y { get; set; }
+
+        public override string ToString()
+        {
+            return this.X.ToString() + ',' + this.Y.ToString();
+        }
     }
 
     public partial class TimeboxerForm : Form
@@ -63,8 +68,8 @@ namespace Timeboxer
                 Y = this.Location.Y
             };
 
-            string jsonString = JsonSerializer.Serialize(formPosition);
-            File.WriteAllText(PositionFilePath, jsonString);
+
+            File.WriteAllText(PositionFilePath, this.Location.X.ToString() + "," + this.Location.Y.ToString());
         }
 
         // Method to load the form position from a JSON file
@@ -73,7 +78,7 @@ namespace Timeboxer
             if (File.Exists(PositionFilePath))
             {
                 string jsonString = File.ReadAllText(PositionFilePath);
-                var formPosition = JsonSerializer.Deserialize<FormPosition>(jsonString);
+                var formPosition = new FormPosition();
 
                 if (formPosition != null)
                 {
@@ -81,6 +86,10 @@ namespace Timeboxer
                     this.Location = new System.Drawing.Point(formPosition.X, formPosition.Y);
                 }
             }
+        }
+        private void form_Closing(object sender, EventArgs e)
+        {
+            SaveFormPosition();
         }
         public TimeboxerForm()
         {
@@ -153,7 +162,7 @@ namespace Timeboxer
             g.DrawString(text, font, brush, text_point);
         }
 
-        private void draw_clockface(Graphics gr, Size clientSize, float sweep, bool showRemaining, string remainingTime, bool showAlarmTime) 
+        private void draw_clockface(Graphics gr, Size clientSize, float sweep, bool showRemaining, string remainingTime, bool showAlarmTime)
         {
             gr.Clear(this.TransparencyKey);
 
@@ -213,7 +222,6 @@ namespace Timeboxer
             Graphics gr = e.Graphics;
 
             draw_clockface(gr, ClientSize, this.Sweep, is_active, RemainingTime, is_active && alarm_time_show_ticks > 0);
-
         }
 
         // Return angle from origin to point in positive degrees
@@ -231,7 +239,7 @@ namespace Timeboxer
         }
 
         // Round to nearest _granularity_
-        private int Quantize( int input, int granularity)
+        private int Quantize(int input, int granularity)
         {
             return granularity * (int)((input + (granularity / 2)) / granularity);
         }
@@ -250,9 +258,9 @@ namespace Timeboxer
             if (e.Button == MouseButtons.Right)
             {
                 // Get angle through the mouse position
-                mouse_angle = Quantize( (int)get_angle_from_vector(mouse_at), 3);
+                mouse_angle = Quantize((int)get_angle_from_vector(mouse_at), 3);
 
-                double mouse_period = mouse_angle / 6.0 + (1.0/60.0);
+                double mouse_period = mouse_angle / 6.0 + (1.0 / 60.0);
                 alarm_time = DateTime.Now.AddMinutes(mouse_period);
                 alarm_time_show_ticks = 12; // 4 per second
             }
@@ -264,7 +272,7 @@ namespace Timeboxer
         {
             if (alarm_time_show_ticks > 0)
             {
-               alarm_time_show_ticks--;
+                alarm_time_show_ticks--;
             }
 
             if (is_active && (alarm_time <= DateTime.Now)) // transition to inactive
@@ -277,10 +285,27 @@ namespace Timeboxer
             {
                 is_active = true;
             }
-            
+
             Refresh();
         }
-# ifdef GENERATE_ICONS
+
+        private void pictureBox1_DoubleClick(object sender, EventArgs e)
+        {
+            if (is_active)
+            {
+#if GENERATE_ICONS
+                GenerateIcons();
+#endif
+                alarm_time = DateTime.Now;
+                is_active = false;
+            }
+            else
+            {
+                Close();
+            }
+        }
+
+#if GENERATE_ICONS
         private static Bitmap ResizeImage(Image image, int width, int height)
         {
             var destRect = new Rectangle(0, 0, width, height);
@@ -305,13 +330,9 @@ namespace Timeboxer
 
             return destImage;
         }
-#endif
-        private void pictureBox1_DoubleClick(object sender, EventArgs e)
+        private Static void GenerateIcons()
         {
-            if (is_active)
-            {
-# ifdef GENERATE_ICONS
-                 nasty hack to draw a set of icons
+                // nasty hack to draw a set of icons
                 Size canvasSize = new Size(96, 96);
                 Bitmap bmp = new Bitmap(canvasSize.Width, canvasSize.Height);
                 using (Graphics g = Graphics.FromImage(bmp))
@@ -319,15 +340,7 @@ namespace Timeboxer
                     draw_clockface(g, canvasSize, Sweep, true, RemainingTime, false);
                 }
                 bmp.Save("timeboxer.png", ImageFormat.Icon);
-#endif
-                alarm_time = DateTime.Now;
-                is_active = false;
-            }
-            else
-            {
-                Close();
-            }
-
         }
+#endif
     }
 }
