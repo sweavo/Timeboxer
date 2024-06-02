@@ -1,3 +1,18 @@
+# Prepare a release package for upload to github
+#
+# DOES NOT BUILD OR TEST.
+#
+# Process is: 
+#
+# * In visual studio, edit timeboxer/Properties/AssemblyInfo.cs to set the version number
+# * Make sure the README talks about the latest features
+# * commit the changes made above and tag
+# * clone the repo to a temp workdir
+# * in the temp clone, rebuild project in Release Build (to check all needed files are committed)
+# * Test that you can drag the .exe someplace else and start it from there
+# * run this script. It reads the version resource from the exe and uses it to update the readme and to name the zipfile. It removes and replaces the Staging/ folder
+# * Github things
+#
 
 $version = (Get-Item .\Timeboxer\bin\Release\Timeboxer.exe).VersionInfo.FileVersionRaw
 

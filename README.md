@@ -5,7 +5,7 @@ https://github.com/sweavo/Timeboxer
 
 Only-just-good-enough kitchen timer app. This seeks to get as close as possible to the simplicity of a mechanical kitchen timer.
 
-It has no pause, no options, no installer and three features: it counts down to zero, goes ping and stops. 
+It has no pause, no options, no installer and three features: it counts down to zero, goes ping and stops.
 
 It has two bonus features: it can be moved and it can be quit.
 
@@ -30,6 +30,11 @@ To set the time, use the right mousebutton to drag the sweep anywhere between 0 
 To cancel the timer, double-click the face.  double-click again to quit.
 
 To run multiple timers, run multiple instances of `Timeboxer.exe`
+
+1.1.3 update 2024-06-02
+-----------------------
+
+Now saves its location (in the same folder as the .exe) and restores it, so that when you use it with hotkeys and supply command line args, it doesn't appear to wander around.
 
 Highlander+ update 2023-10-18
 -----------------------------
