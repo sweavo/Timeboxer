@@ -31,6 +31,12 @@ To cancel the timer, double-click the face.  double-click again to quit.
 
 To run multiple timers, run multiple instances of `Timeboxer.exe`
 
+1.1.3 update 2024-06-02
+-----------------------
+
+Now saves its location (in the same folder as the .exe) and restores it. This improves integration with hotkeys that (re)start timeboxer with 
+a given time: the window no longer jumps around the screen.
+
 Highlander+ update 2023-10-18
 -----------------------------
 
