@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Timeboxer")] // UPDATEME Distinguishing name
+[assembly: AssemblyProduct("Timeboxer (Highlander+)")] // UPDATEME Distinguishing name
 [assembly: AssemblyCopyright("Copyright ©  2021 Steve Carter")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -30,5 +30,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.2")] // UPDATEME Version number
-[assembly: AssemblyFileVersion("1.1.2")] // UPDATEME Version number
+[assembly: AssemblyVersion("1.1.1")] // UPDATEME Version number
+[assembly: AssemblyFileVersion("1.1.1")] // UPDATEME Version number

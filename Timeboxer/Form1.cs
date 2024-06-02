@@ -2,23 +2,14 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-//using System.Drawing.Imaging;
+using System.Drawing.Imaging;
 using System.Media;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.IO;
-using System.Text.Json;
 
 namespace Timeboxer
 {
-
-    public class FormPosition
-        // for saving and loading
-    {
-        public int X { get; set; }
-        public int Y { get; set; }
-    }
-
     public partial class TimeboxerForm : Form
     {
         // for delegating mouse dragging of the form
@@ -33,59 +24,31 @@ namespace Timeboxer
 
 
         // For drawing clock faces, etc.
-        private static readonly float FACE_ANGLE_TOP = -90.0f;
+        private static Point ORIGIN = new Point(0, 0);
+
+        private static float FACE_ANGLE_TOP = -90.0f;
 
         public DateTime alarm_time;
         private int alarm_time_show_ticks = 0;
         private double mouse_angle;
 
-        private static readonly Brush face_brush = Brushes.White;
-        private static readonly Brush pie_brush = Brushes.Coral;
-        private static readonly int border_pixels = 4;
-        private static readonly Pen border_pen = new Pen(Color.Black, border_pixels);
-        private static readonly Brush border_brush = Brushes.Black;
+        private static Brush face_brush = Brushes.White;
+        private static Brush pie_brush = Brushes.Coral;
+        private static int border_pixels = 4;
+        private static Pen border_pen = new Pen(Color.Black, border_pixels);
+        private static Brush border_brush = Brushes.Black;
         private static Pen thick_tick_pen; // see ctor
-        private static readonly Pen thin_tick_pen = Pens.Black;
+        private static Pen thin_tick_pen = Pens.Black;
 
         // radii of ticks, as a proportion of the available radius
-        private static readonly float big_tick_r_from = 0.8f;
-        private static readonly float small_tick_r_from = 0.85f;
-        private static readonly float tick_r_to = 0.9f;
+        private static float big_tick_r_from = 0.8f;
+        private static float small_tick_r_from = 0.85f;
+        private static float tick_r_to = 0.9f;
 
         private static bool is_active = false;
-        private static string PositionFilePath = "formposition.json";
 
-        // Method to save the form position to a JSON file
-        private void SaveFormPosition()
-        {
-            var formPosition = new FormPosition
-            {
-                X = this.Location.X,
-                Y = this.Location.Y
-            };
-
-            string jsonString = JsonSerializer.Serialize(formPosition);
-            File.WriteAllText(PositionFilePath, jsonString);
-        }
-
-        // Method to load the form position from a JSON file
-        private void LoadFormPosition()
-        {
-            if (File.Exists(PositionFilePath))
-            {
-                string jsonString = File.ReadAllText(PositionFilePath);
-                var formPosition = JsonSerializer.Deserialize<FormPosition>(jsonString);
-
-                if (formPosition != null)
-                {
-                    this.StartPosition = FormStartPosition.Manual;
-                    this.Location = new System.Drawing.Point(formPosition.X, formPosition.Y);
-                }
-            }
-        }
         public TimeboxerForm()
         {
-            this.FormClosing += new FormClosingEventHandler(form_Closing);
             InitializeComponent();
 
             // Moar UI initialization, not managed by the designer
@@ -95,7 +58,6 @@ namespace Timeboxer
             // Initialize app state
             alarm_time = DateTime.Now;
 
-            LoadFormPosition();
         }
 
         // RemainingSeconds: The number of seconds remaining before the alarm time, or 0 if in the past.
@@ -282,34 +244,30 @@ namespace Timeboxer
             Refresh();
         }
 
-        private void form_Closing(object sender, EventArgs e)
+        private static Bitmap ResizeImage(Image image, int width, int height)
         {
-            SaveFormPosition();
+            var destRect = new Rectangle(0, 0, width, height);
+            var destImage = new Bitmap(width, height);
+
+            destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+            using (var graphics = Graphics.FromImage(destImage))
+            {
+                graphics.CompositingMode = CompositingMode.SourceCopy;
+                graphics.CompositingQuality = CompositingQuality.HighQuality;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphics.SmoothingMode = SmoothingMode.HighQuality;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                using (var wrapMode = new ImageAttributes())
+                {
+                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+                    graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
+                }
+            }
+
+            return destImage;
         }
-        //private static Bitmap ResizeImage(Image image, int width, int height)
-        //{
-        //    var destRect = new Rectangle(0, 0, width, height);
-        //    var destImage = new Bitmap(width, height);
-
-        //    destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
-
-        //    using (var graphics = Graphics.FromImage(destImage))
-        //    {
-        //        graphics.CompositingMode = CompositingMode.SourceCopy;
-        //        graphics.CompositingQuality = CompositingQuality.HighQuality;
-        //        graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-        //        graphics.SmoothingMode = SmoothingMode.HighQuality;
-        //        graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-        //        using (var wrapMode = new ImageAttributes())
-        //        {
-        //            wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-        //            graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
-        //        }
-        //    }
-
-        //    return destImage;
-        //}
         private void pictureBox1_DoubleClick(object sender, EventArgs e)
         {
             if (is_active)

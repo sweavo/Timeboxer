@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace Timeboxer
+﻿namespace Timeboxer
 {
     partial class TimeboxerForm
     {
